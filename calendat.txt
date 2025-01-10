@@ -1,0 +1,207 @@
+import { Calendar, LocaleConfig } from "react-native-calendars";
+import { View, Text, StyleSheet } from "react-native";
+import { colors } from "@/constants/Colors";
+import { useState } from "react";
+
+LocaleConfig.locales["es"] = {
+  monthNames: [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ],
+  monthNamesShort: [
+    "Ene",
+    "Feb",
+    "Mar",
+    "Abr",
+    "May",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dic",
+  ],
+  dayNames: [
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+  ],
+  dayNamesShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+  today: "Hoy",
+};
+
+LocaleConfig.defaultLocale = "es";
+
+interface MarkedDate {
+  color: string;
+  textColor: string;
+  startingDay?: boolean;
+  endingDay?: boolean;
+}
+
+interface Range {
+  startDate: string | null;
+  endDate: string | null;
+}
+
+const ReservationsCalendar = () => {
+  const [range, setRange] = useState<Range>({ startDate: null, endDate: null });
+  const [markedDates, setMarkedDates] = useState<{ [key: string]: MarkedDate }>(
+    {}
+  );
+
+  const handleDayPress = (day: { dateString: string }) => {
+    const { dateString } = day;
+
+    if (!range.startDate || (range.startDate && range.endDate)) {
+      setRange({ startDate: dateString, endDate: null });
+      setMarkedDates({
+        [dateString]: {
+          startingDay: true,
+          color: colors.primary,
+          textColor: "white",
+        },
+      });
+    } else {
+      const startDate = range.startDate;
+      const endDate = dateString;
+
+      if (new Date(startDate) > new Date(endDate)) {
+        setRange({ startDate: endDate, endDate: null });
+        setMarkedDates({
+          [endDate]: {
+            startingDay: true,
+            color: colors.primary,
+            textColor: "white",
+          },
+        });
+        return;
+      }
+
+      const rangeDates = getDatesInRange(startDate, endDate);
+      const newMarkedDates: { [key: string]: MarkedDate } = {};
+
+      rangeDates.forEach((date, index) => {
+        newMarkedDates[date] = {
+          color: colors.primary,
+          textColor: "white",
+          startingDay: index === 0,
+          endingDay: index === rangeDates.length - 1,
+        };
+      });
+
+      setRange({ startDate, endDate });
+      setMarkedDates(newMarkedDates);
+    }
+  };
+
+  const getDatesInRange = (
+    start: string | number | Date,
+    end: string | number | Date
+  ): string[] => {
+    const dates: string[] = [];
+    let currentDate = new Date(start);
+    const endDate = new Date(end);
+
+    while (currentDate <= endDate) {
+      dates.push(currentDate.toISOString().split("T")[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  };
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Calendar
+        locale="es"
+        enableSwipe={true}
+        hideExtraDays={false}
+        scrollEnabled={false}
+        markingType={"period"}
+        markedDates={markedDates}
+        onDayPress={handleDayPress}
+        style={{
+          height: 350,
+          borderWidth: 1,
+          borderRadius: 8,
+          borderColor: "#ccc",
+        }}
+        theme={{
+          dayTextColor: "#2d4150",
+          textDisabledColor: "#ccc",
+          backgroundColor: "#ffffff",
+          arrowColor: colors.primary,
+          calendarBackground: "#ffffff",
+          todayTextColor: colors.primary,
+          selectedDayTextColor: "#ffffff",
+          textSectionTitleColor: "#b6c1cd",
+          selectedDayBackgroundColor: "#00adf5",
+        }}
+      />
+      <View style={styles.dateContainer}>
+        <Text style={styles.text}>
+          <Text style={styles.textBold}>Entrada:</Text>
+          <Text>
+            {range.startDate ? ` (${formatDate(range.startDate)})` : ""}{" "}
+            {" -  "}
+          </Text>
+          <Text style={styles.textBold}>Salida:</Text>
+          <Text>{range.endDate ? ` (${formatDate(range.endDate)})` : ""}</Text>
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    backgroundColor: "#f9f9f9",
+  },
+  text: {
+    fontSize: 14,
+    color: "#333",
+    marginTop: 10,
+    textAlign: "center",
+  },
+  textBold: {
+    fontWeight: "700",
+  },
+  dateContainer: {
+    marginTop: 10,
+    flexWrap: "wrap",
+    flexDirection: "row",
+    paddingHorizontal: 10,
+    justifyContent: "center",
+  },
+});
+
+export default ReservationsCalendar;
