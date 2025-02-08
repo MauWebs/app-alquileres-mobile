@@ -90,10 +90,10 @@ const LineChartAnnual: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
-    paddingBottom: 20,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 20,
+    paddingBottom: 20,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderTopColor: colors.neutral,

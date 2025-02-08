@@ -15,6 +15,7 @@ interface Booking {
   checkin: string;
   checkout: string;
   property: string;
+  cost: number;
 }
 
 LocaleConfig.locales["es"] = {
@@ -63,9 +64,24 @@ LocaleConfig.defaultLocale = "es";
 
 const ReservationsCalendar = () => {
   const bookings: Booking[] = [
-    { checkin: "2024-12-10", checkout: "2024-12-11", property: "Propiedad 1" },
-    { checkin: "2024-12-12", checkout: "2024-12-13", property: "Propiedad 2" },
-    { checkin: "2024-12-14", checkout: "2024-12-15", property: "Propiedad 3" },
+    {
+      checkin: "2024-12-10",
+      checkout: "2024-12-11",
+      property: "Propiedad 1",
+      cost: 1000,
+    },
+    {
+      checkin: "2024-12-12",
+      checkout: "2024-12-13",
+      property: "Propiedad 2",
+      cost: 2000,
+    },
+    {
+      checkin: "2024-12-14",
+      checkout: "2024-12-15",
+      property: "Propiedad 3",
+      cost: 3000,
+    },
   ];
 
   const markedDates = bookings.reduce<Record<string, MarkedDate>>(
@@ -104,7 +120,7 @@ const ReservationsCalendar = () => {
         style={styles.calendar}
         theme={{
           dayTextColor: "#2d4150",
-          textDisabledColor: "#ccc",
+          textDisabledColor: colors.neutral,
           backgroundColor: "#ffffff",
           arrowColor: colors.primary,
           calendarBackground: "#ffffff",
@@ -119,6 +135,7 @@ const ReservationsCalendar = () => {
           <Text style={[styles.tableCell, styles.headerCell]}>Entrada</Text>
           <Text style={[styles.tableCell, styles.headerCell]}>Salida</Text>
           <Text style={[styles.tableCell, styles.headerCell]}>Propiedad</Text>
+          <Text style={[styles.tableCell, styles.headerCell]}>Costo total</Text>
         </View>
 
         {bookings.map((item, index) => (
@@ -132,6 +149,9 @@ const ReservationsCalendar = () => {
             <Text style={styles.tableCell}>{formatDate(item.checkin)}</Text>
             <Text style={styles.tableCell}>{formatDate(item.checkout)}</Text>
             <Text style={styles.tableCell}>{item.property}</Text>
+            <Text style={styles.tableCell}>
+              $ {item.cost.toLocaleString("es-AR")}
+            </Text>
           </View>
         ))}
       </View>
@@ -151,12 +171,12 @@ const styles = StyleSheet.create({
     height: 350,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: "#ccc",
+    borderColor: colors.neutral,
     marginBottom: 20,
   },
   tableContainer: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.neutral,
     borderRadius: 8,
     backgroundColor: "#fff",
     overflow: "hidden",

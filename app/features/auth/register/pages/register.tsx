@@ -66,12 +66,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: background,
     justifyContent: "center",
+    marginBottom: 50,
   },
   formContainer: {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
     paddingBottom: 20,
+    paddingTop: 20,
   },
   title: {
     fontSize: 24,

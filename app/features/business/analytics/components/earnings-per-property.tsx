@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    marginBottom: 40,
+    marginBottom: 60,
     alignItems: "center",
     backgroundColor: background,
   },
@@ -81,9 +81,10 @@ const styles = StyleSheet.create({
   propertyContainer: {
     padding: 10,
     width: "100%",
+    marginBottom: 10,
+    paddingBottom: 20,
     borderWidth: 1,
     borderRadius: 16,
-    marginBottom: 20,
     borderColor: colors.neutral,
     backgroundColor: colors.white,
   },

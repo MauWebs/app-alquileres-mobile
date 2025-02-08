@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text, Image } from "react-native";
 import UserBurgerMenu from "../components/user-burger-menu";
 import { colors } from "@/constants/Colors";
+import { Link } from "expo-router";
 import React from "react";
 
 const UserData = {
@@ -10,8 +11,7 @@ const UserData = {
   location: "Buenos Aires, Argentina",
   email: "mauriciovidalwebs@gmail.com",
   bio: "Desarrollando un software mobile con la herramienta React Native.",
-  avatarUrl:
-    "https://instagram.faep1-1.fna.fbcdn.net/v/t51.2885-19/310831180_473983567994195_8663720639638480679_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.faep1-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=Thi8ttUheWIQ7kNvgEikfPd&_nc_gid=d3d3c04e84944e28aefb42eecbc70767&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AYCWBHV75gEXX-CwXnPQH1l4dazfKBYMNNFCWVKmQMpHlg&oe=676CCCC1&_nc_sid=7a9f4b",
+  avatarUrl: "https://avatars.githubusercontent.com/u/114698133?v=4",
 };
 
 const UserProfileData = () => {
@@ -22,15 +22,20 @@ const UserProfileData = () => {
         <Image source={{ uri: UserData.avatarUrl }} style={styles.avatar} />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{UserData.name}</Text>
-          <Text style={styles.profession}>{UserData.profession}</Text>
+          <Text style={styles.profession}>💻 {UserData.profession}</Text>
           <Text style={styles.bio}>{UserData.bio}</Text>
         </View>
+        <Link href="/features/users/profile/pages/profile-edit">
+          <View style={styles.editButton}>
+            <Text style={styles.editButtonText}>Editar</Text>
+          </View>
+        </Link>
       </View>
       <View style={styles.fullWidthDivider}>
         <View style={styles.bottomInfo}>
-          <Text style={styles.info}>{UserData.phone}</Text>
-          <Text style={styles.info}>{UserData.location}</Text>
-          <Text style={styles.info}>{UserData.email}</Text>
+          <Text style={styles.info}>📞 {UserData.phone}</Text>
+          <Text style={styles.info}>🌍 {UserData.location}</Text>
+          <Text style={styles.info}>📧 {UserData.email}</Text>
         </View>
       </View>
     </View>
@@ -47,6 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     marginBottom: 25,
+    position: "relative",
   },
   avatar: {
     width: 100,
@@ -58,6 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   name: {
+    marginTop: 9,
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 5,
@@ -90,6 +97,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#555",
     marginBottom: 5,
+  },
+  editButton: {
+    position: "absolute",
+    top: 10,
+    right: 50,
+    backgroundColor: colors.primary,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+  },
+  editButtonText: {
+    color: colors.white,
+    fontWeight: "bold",
   },
 });
 

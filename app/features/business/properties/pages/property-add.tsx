@@ -81,9 +81,7 @@ const AddProperty = () => {
     <>
       <PropertyAddHeader />
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.divider}></View>
-
-        <View style={styles.inputGroup}>
+        <View style={[styles.inputGroup, styles.containerStyle]}>
           <Text style={styles.label}>Precio:</Text>
           <TextInput
             style={styles.input}
@@ -92,18 +90,16 @@ const AddProperty = () => {
             value={formData.price}
             onChangeText={(value) => setFormData({ ...formData, price: value })}
           />
-        </View>
 
-        <Text style={styles.label}>Título:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Título breve"
-          keyboardType="default"
-          value={formData.name}
-          onChangeText={(value) => setFormData({ ...formData, name: value })}
-        />
+          <Text style={styles.label}>Título:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Título breve"
+            keyboardType="default"
+            value={formData.name}
+            onChangeText={(value) => setFormData({ ...formData, name: value })}
+          />
 
-        <View style={[styles.inputGroup, styles.spacingTop]}>
           <Text style={styles.label}>Ubicación:</Text>
           <TextInput
             style={styles.input}
@@ -116,22 +112,20 @@ const AddProperty = () => {
           />
         </View>
 
-        <View style={styles.divider}></View>
-
-        <Pressable style={styles.photoButton} onPress={handlePhotoAdd}>
-          <Text style={styles.buttonText}>Añadir Foto</Text>
-        </Pressable>
-
-        <View style={styles.photoContainer}>
+        <View style={[styles.photoContainer, styles.containerStyle]}>
           {formData.photos.map((photo, index) => (
             <Image key={index} source={{ uri: photo }} style={styles.photo} />
           ))}
+
+          <Pressable style={styles.photoButton} onPress={handlePhotoAdd}>
+            <Text style={styles.buttonText}>Añadir foto</Text>
+          </Pressable>
         </View>
 
-        <View style={styles.divider}></View>
-
         <View style={styles.row}>
-          <View style={[styles.inputGroup, styles.rowItem]}>
+          <View
+            style={[styles.inputGroup, styles.rowItem, styles.containerStyle]}
+          >
             <Text style={styles.label}>Número de camas:</Text>
             <TextInput
               style={styles.input}
@@ -144,7 +138,14 @@ const AddProperty = () => {
         </View>
 
         {formData.bedTypes.map((bedType, index) => (
-          <View key={index} style={[styles.inputGroup, styles.spacingTop]}>
+          <View
+            key={index}
+            style={[
+              styles.inputGroup,
+              styles.spacingTop,
+              styles.containerStyle,
+            ]}
+          >
             <Text style={styles.label}>Tipo de cama {index + 1}:</Text>
             <View style={styles.pickerContainer}>
               <Picker
@@ -161,8 +162,6 @@ const AddProperty = () => {
             </View>
           </View>
         ))}
-
-        <View style={styles.divider}></View>
 
         <Pressable style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Subir esta propiedad</Text>
@@ -206,8 +205,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     overflow: "hidden",
-    borderColor: "#ccc",
     backgroundColor: "#fff",
+    marginBottom: 20,
+    borderColor: colors.neutral,
   },
   picker: {
     fontSize: 16,
@@ -254,6 +254,13 @@ const styles = StyleSheet.create({
     height: 100,
     borderWidth: 1,
     borderColor: colors.neutral,
+  },
+  containerStyle: {
+    borderWidth: 1,
+    borderRadius: 16,
+    borderColor: colors.neutral,
+    backgroundColor: colors.white,
+    padding: 10,
   },
 });
 
